@@ -973,7 +973,11 @@
     const STORAGE_KEY = "lens_openai_key";
     const proxyBase = "https://corsproxy.io/?url=";
 
-    const demoArticle = `Governor Elena Martinez said the state is "finally standing up to corporate greed" after lawmakers approved a sweeping climate and labor package late Tuesday. Supporters hailed the bill as a long-overdue investment in working families, while critics blasted it as an expensive ideological wish list that punishes job creators.
+    const demoArticles = [
+      {
+        id: "left",
+        title: "Demo Article · Left-Leaning Example",
+        text: `Governor Elena Martinez said the state is "finally standing up to corporate greed" after lawmakers approved a sweeping climate and labor package late Tuesday. Supporters hailed the bill as a long-overdue investment in working families, while critics blasted it as an expensive ideological wish list that punishes job creators.
 
 At a rally outside the capitol, Martinez accused fossil fuel executives of "holding communities hostage" and said the package would force "polluters and profiteers" to pay their fair share. Union organizers praised the measure for giving ordinary workers more leverage, arguing that the previous system tilted heavily toward wealthy donors and entrenched business interests.
 
@@ -983,62 +987,171 @@ The 412-page package creates new emissions penalties, expands collective bargain
 
 Advocacy groups aligned with the governor celebrated the vote as a moral turning point. One organizer called it a victory over "callous obstruction" and "fear-driven politics." Opponents countered that the measure sidelines energy workers, relies on rosy assumptions, and offers little evidence that the state can deliver the promised benefits without deepening budget strain.
 
-Local residents interviewed after the vote voiced mixed reactions. A public school teacher said the plan "puts people ahead of profits" and could improve air quality in neighborhoods near freight corridors. A trucking company owner said lawmakers ignored communities that depend on affordable fuel and stable freight routes. Neither side presented new data during the interviews, and the debate often centered on competing political narratives rather than measurable outcomes.`;
-
-    const demoAnalysis = {
-      democrat_score: 68,
-      republican_score: 34,
-      bias_label: "Leans Left",
-      bias_summary: "The article leans left by framing the climate and labor package in morally favorable terms and by foregrounding the governor's language about corporate greed, polluters, and working families. Right-leaning objections are included, but they are often presented as reactive pushback against a reform-oriented narrative. Emotional phrases such as 'holding communities hostage,' 'radical activists,' and 'callous obstruction' heighten the partisan framing on both sides.",
-      methodology_breakdown: {
-        word_choice_score: 72,
-        rhetoric_score: 66,
-        source_score: 48,
-        explanation: "Word choice tilts left through phrases like 'corporate greed,' 'working families,' and 'polluters and profiteers.' Rhetorically, supporters receive more morally affirmative framing while conservative objections are often framed as reactive or extreme. Sourcing is mixed because the article quotes political actors and advocates from both sides but relies only lightly on independent verification."
+Local residents interviewed after the vote voiced mixed reactions. A public school teacher said the plan "puts people ahead of profits" and could improve air quality in neighborhoods near freight corridors. A trucking company owner said lawmakers ignored communities that depend on affordable fuel and stable freight routes. Neither side presented new data during the interviews, and the debate often centered on competing political narratives rather than measurable outcomes.`,
+        analysis: {
+          democrat_score: 68,
+          republican_score: 34,
+          bias_label: "Leans Left",
+          bias_summary: "The article leans left by framing the climate and labor package in morally favorable terms and by foregrounding the governor's language about corporate greed, polluters, and working families. Right-leaning objections are included, but they are often presented as reactive pushback against a reform-oriented narrative. Emotional phrases such as 'holding communities hostage,' 'radical activists,' and 'callous obstruction' heighten the partisan framing on both sides.",
+          methodology_breakdown: {
+            word_choice_score: 72,
+            rhetoric_score: 66,
+            source_score: 48,
+            explanation: "Word choice tilts left through phrases like 'corporate greed,' 'working families,' and 'polluters and profiteers.' Rhetorically, supporters receive more morally affirmative framing while conservative objections are often framed as reactive or extreme. Sourcing is mixed because the article quotes political actors and advocates from both sides but relies only lightly on independent verification."
+          },
+          highlighted_spans: [
+            { text: "finally standing up to corporate greed", type: "left", reason: "Frames the policy as a populist fight against corporations, a common left-leaning narrative." },
+            { text: "long-overdue investment in working families", type: "left", reason: "Uses sympathetic language aligned with progressive economic framing." },
+            { text: "expensive ideological wish list", type: "right", reason: "A conservative-style critique portraying the legislation as partisan overreach." },
+            { text: "holding communities hostage", type: "emotional", reason: "Highly charged metaphor that intensifies blame and urgency." },
+            { text: "polluters and profiteers", type: "left", reason: "Assigns moral fault to targeted industries in a partisan way." },
+            { text: "tilted heavily toward wealthy donors and entrenched business interests", type: "left", reason: "Positions existing systems as favoring elites, reinforcing progressive framing." },
+            { text: "reckless and divisive", type: "right", reason: "Loaded opposition language commonly used in partisan criticism." },
+            { text: "radical activists have hijacked the agenda", type: "right", reason: "Signals a strong conservative framing of progressive influence as extreme." },
+            { text: "crushing compliance costs", type: "emotional", reason: "Emotionally amplifies the burden of regulation." },
+            { text: "elite progressive priorities", type: "right", reason: "Frames the legislation as disconnected from ordinary voters using conservative language." },
+            { text: "moral turning point", type: "left", reason: "Suggests the policy is not just practical but morally necessary." },
+            { text: "callous obstruction", type: "emotional", reason: "Uses accusatory wording to vilify opponents." },
+            { text: "fear-driven politics", type: "emotional", reason: "Describes the opposition in psychologically loaded, pejorative terms." },
+            { text: "rosy assumptions", type: "right", reason: "Dismisses projected benefits using skeptical conservative framing." },
+            { text: "puts people ahead of profits", type: "left", reason: "Classic progressive contrast between public good and business interests." },
+            { text: "competing political narratives rather than measurable outcomes", type: "neutral", reason: "This passage steps back from partisan claims and acknowledges limited evidence." }
+          ],
+          emotional_score: 71,
+          emotional_words: ["corporate greed", "holding communities hostage", "radical activists", "callous obstruction", "fear-driven politics"],
+          missing_perspectives: [
+            "Independent economists or budget analysts evaluating the long-term fiscal impact with concrete numbers.",
+            "Energy workers or industry representatives explaining how the penalties and transition timeline would affect employment.",
+            "Public health or climate researchers providing evidence for the likely environmental benefits.",
+            "Residents outside the rally setting, especially undecided or low-income households facing energy-cost tradeoffs."
+          ],
+          article_summary: "The article covers a state climate and labor bill championed by Governor Elena Martinez and the sharp political fight around it. Supporters describe it as a pro-worker and environmental justice package, while opponents warn that it is ideologically driven and economically risky. The piece emphasizes rhetorical clashes more than independently verified evidence.",
+          credibility_grade: "C",
+          credibility_reason: "The article includes named political figures and direct quotes, but it relies heavily on partisan rhetoric and provides limited independent evidence to verify major claims about costs or benefits.",
+          sources_found: [
+            { name: "Governor Elena Martinez", reference_type: "quoted", credibility_tag: "Primary Source", quote_or_mention: "Quoted defending the bill and accusing fossil fuel executives of holding communities hostage." },
+            { name: "Senate Minority Leader Caleb Dunn", reference_type: "quoted", credibility_tag: "Primary Source", quote_or_mention: "Quoted criticizing the bill as driven by radical activists and harmful to small businesses." },
+            { name: "Union organizers", reference_type: "mentioned", credibility_tag: "Organization", quote_or_mention: "Referenced as supporters arguing the bill gives workers more leverage." },
+            { name: "Conservative policy groups", reference_type: "mentioned", credibility_tag: "Organization", quote_or_mention: "Referenced as saying the legislation reflects elite progressive priorities." },
+            { name: "independent analysts", reference_type: "mentioned", credibility_tag: "Expert", quote_or_mention: "Mentioned as questioning revenue projections, but not individually named." }
+          ]
+        }
       },
-      highlighted_spans: [
-        { text: "finally standing up to corporate greed", type: "left", reason: "Frames the policy as a populist fight against corporations, a common left-leaning narrative." },
-        { text: "long-overdue investment in working families", type: "left", reason: "Uses sympathetic language aligned with progressive economic framing." },
-        { text: "expensive ideological wish list", type: "right", reason: "A conservative-style critique portraying the legislation as partisan overreach." },
-        { text: "holding communities hostage", type: "emotional", reason: "Highly charged metaphor that intensifies blame and urgency." },
-        { text: "polluters and profiteers", type: "left", reason: "Assigns moral fault to targeted industries in a partisan way." },
-        { text: "tilted heavily toward wealthy donors and entrenched business interests", type: "left", reason: "Positions existing systems as favoring elites, reinforcing progressive framing." },
-        { text: "reckless and divisive", type: "right", reason: "Loaded opposition language commonly used in partisan criticism." },
-        { text: "radical activists have hijacked the agenda", type: "right", reason: "Signals a strong conservative framing of progressive influence as extreme." },
-        { text: "crushing compliance costs", type: "emotional", reason: "Emotionally amplifies the burden of regulation." },
-        { text: "elite progressive priorities", type: "right", reason: "Frames the legislation as disconnected from ordinary voters using conservative language." },
-        { text: "moral turning point", type: "left", reason: "Suggests the policy is not just practical but morally necessary." },
-        { text: "callous obstruction", type: "emotional", reason: "Uses accusatory wording to vilify opponents." },
-        { text: "fear-driven politics", type: "emotional", reason: "Describes the opposition in psychologically loaded, pejorative terms." },
-        { text: "rosy assumptions", type: "right", reason: "Dismisses projected benefits using skeptical conservative framing." },
-        { text: "puts people ahead of profits", type: "left", reason: "Classic progressive contrast between public good and business interests." },
-        { text: "competing political narratives rather than measurable outcomes", type: "neutral", reason: "This passage steps back from partisan claims and acknowledges limited evidence." }
-      ],
-      emotional_score: 71,
-      emotional_words: [
-        "corporate greed",
-        "holding communities hostage",
-        "radical activists",
-        "callous obstruction",
-        "fear-driven politics"
-      ],
-      missing_perspectives: [
-        "Independent economists or budget analysts evaluating the long-term fiscal impact with concrete numbers.",
-        "Energy workers or industry representatives explaining how the penalties and transition timeline would affect employment.",
-        "Public health or climate researchers providing evidence for the likely environmental benefits.",
-        "Residents outside the rally setting, especially undecided or low-income households facing energy-cost tradeoffs."
-      ],
-      article_summary: "The article covers a state climate and labor bill championed by Governor Elena Martinez and the sharp political fight around it. Supporters describe it as a pro-worker and environmental justice package, while opponents warn that it is ideologically driven and economically risky. The piece emphasizes rhetorical clashes more than independently verified evidence.",
-      credibility_grade: "C",
-      credibility_reason: "The article includes named political figures and direct quotes, but it relies heavily on partisan rhetoric and provides limited independent evidence to verify major claims about costs or benefits.",
-      sources_found: [
-        { name: "Governor Elena Martinez", reference_type: "quoted", credibility_tag: "Primary Source", quote_or_mention: "Quoted defending the bill and accusing fossil fuel executives of holding communities hostage." },
-        { name: "Senate Minority Leader Caleb Dunn", reference_type: "quoted", credibility_tag: "Primary Source", quote_or_mention: "Quoted criticizing the bill as driven by radical activists and harmful to small businesses." },
-        { name: "Union organizers", reference_type: "mentioned", credibility_tag: "Organization", quote_or_mention: "Referenced as supporters arguing the bill gives workers more leverage." },
-        { name: "Conservative policy groups", reference_type: "mentioned", credibility_tag: "Organization", quote_or_mention: "Referenced as saying the legislation reflects elite progressive priorities." },
-        { name: "independent analysts", reference_type: "mentioned", credibility_tag: "Expert", quote_or_mention: "Mentioned as questioning revenue projections, but not individually named." }
-      ]
-    };
+      {
+        id: "right",
+        title: "Demo Article · Right-Leaning Example",
+        text: `State lawmakers approved a sweeping immigration and school policy package Thursday, prompting supporters to celebrate what they called a long-overdue stand for law, order, and parental rights. Backers said the legislation reins in bureaucrats, protects neighborhoods from chaos at the border, and restores common-sense standards that activists have spent years trying to erase.
+
+Governor Daniel Cross praised the bill as a defense against "radical left experiments" that have, in his words, "turned public institutions against ordinary families." He argued that the measures would prevent taxpayer dollars from rewarding illegal entry and would give parents more authority over classroom materials related to gender, race, and sexuality.
+
+Democratic critics said the package scapegoats immigrants and invites censorship, but their objections were often framed by supporters as the predictable outrage of coastal elites and professional activists. Conservative commentators hailed the vote as a rebuke to soft-on-crime politics and said the reforms finally put citizens ahead of special interests.
+
+The legislation expands state cooperation with federal immigration enforcement, creates financial penalties for school districts that withhold curriculum records from parents, and imposes new restrictions on public benefit access for undocumented residents. Civil liberties groups warned that parts of the bill could trigger legal challenges, though supporters insisted the state is merely enforcing existing standards more aggressively.
+
+One sheriff said communities have been "overrun by reckless neglect" from Washington and argued that local officers need stronger tools to deter cartel traffic and repeat offenders. A parents' advocacy group called the package a victory over "ideological indoctrination" and "bureaucratic stonewalling." Opponents, meanwhile, said the bill uses inflammatory language while offering limited evidence that the measures will improve public safety or educational outcomes.
+
+Residents interviewed after the vote split along familiar lines. A retired Marine said lawmakers were finally putting Americans first. A high school librarian said the proposal would chill classroom discussion and stigmatize immigrant families. The debate focused heavily on symbolic values and political identity, with relatively little neutral data presented in the piece itself.`,
+        analysis: {
+          democrat_score: 22,
+          republican_score: 82,
+          bias_label: "Leans Right",
+          bias_summary: "The article leans strongly right by centering conservative talking points about law and order, parental rights, and radical left overreach. Democratic criticism is included, but it is frequently framed as elite outrage rather than as a substantive policy objection. Emotional phrasing such as 'chaos at the border,' 'soft-on-crime politics,' and 'ideological indoctrination' pushes the framing further right.",
+          methodology_breakdown: {
+            word_choice_score: 84,
+            rhetoric_score: 79,
+            source_score: 46,
+            explanation: "The wording is heavily right-coded through phrases like 'illegal entry,' 'parental rights,' 'radical left experiments,' and 'putting Americans first.' Rhetorically, conservative positions are cast as practical and protective while critics are described as elites or activists. Sourcing remains mixed because the story quotes officials and advocacy groups but offers limited independent evidence for the strongest claims."
+          },
+          highlighted_spans: [
+            { text: "law, order, and parental rights", type: "right", reason: "Bundles together strongly conservative issue framing." },
+            { text: "protects neighborhoods from chaos at the border", type: "right", reason: "Uses security-oriented, right-coded framing around immigration." },
+            { text: "restores common-sense standards", type: "right", reason: "Presents one ideological position as obvious and reasonable." },
+            { text: "radical left experiments", type: "right", reason: "Classic partisan language depicting progressives as extreme." },
+            { text: "turned public institutions against ordinary families", type: "emotional", reason: "Emotionally charged claim that casts institutions as hostile." },
+            { text: "rewarding illegal entry", type: "right", reason: "Right-coded immigration phrase emphasizing illegality." },
+            { text: "coastal elites and professional activists", type: "right", reason: "Frames opponents as out-of-touch ideological actors." },
+            { text: "soft-on-crime politics", type: "right", reason: "A standard conservative critique of public safety policy." },
+            { text: "overrun by reckless neglect", type: "emotional", reason: "Escalates urgency and blame with highly charged wording." },
+            { text: "ideological indoctrination", type: "right", reason: "Strong conservative language used in school culture-war framing." },
+            { text: "bureaucratic stonewalling", type: "emotional", reason: "Adds antagonistic emotional framing to the dispute." },
+            { text: "with relatively little neutral data presented", type: "neutral", reason: "Pulls back from advocacy and notes the article's evidentiary limits." }
+          ],
+          emotional_score: 76,
+          emotional_words: ["chaos at the border", "radical left experiments", "soft-on-crime politics", "overrun by reckless neglect", "ideological indoctrination"],
+          missing_perspectives: [
+            "Immigration policy experts or legal scholars explaining how the enforcement provisions compare with existing law.",
+            "Teachers, principals, or students directly affected by the curriculum transparency measures.",
+            "Independent crime or school-performance data supporting or challenging the supporters' claims.",
+            "Immigrant families or civil rights attorneys describing likely real-world impacts beyond the political framing."
+          ],
+          article_summary: "The article covers a state package focused on immigration enforcement and school transparency rules. Supporters argue it restores order and parental control, while critics say it scapegoats immigrants and chills education. The piece gives much more rhetorical force to the conservative case than to the opposition.",
+          credibility_grade: "C",
+          credibility_reason: "The article references named officials and groups, but many of its strongest claims rely on ideological framing rather than independently verified evidence.",
+          sources_found: [
+            { name: "Governor Daniel Cross", reference_type: "quoted", credibility_tag: "Primary Source", quote_or_mention: "Quoted defending the package as protection against radical left experiments." },
+            { name: "One sheriff", reference_type: "quoted", credibility_tag: "Anonymous", quote_or_mention: "Quoted saying communities have been overrun, but not identified by name." },
+            { name: "parents' advocacy group", reference_type: "quoted", credibility_tag: "Organization", quote_or_mention: "Quoted calling the package a victory over ideological indoctrination." },
+            { name: "Civil liberties groups", reference_type: "mentioned", credibility_tag: "Organization", quote_or_mention: "Referenced as warning that parts of the bill could face legal challenges." }
+          ]
+        }
+      },
+      {
+        id: "neutral",
+        title: "Demo Article · Balanced Example",
+        text: `City officials unveiled a proposal Monday to replace the aging commuter rail fleet with electric trains over the next eight years, a move they say could reduce maintenance costs and improve reliability. The announcement quickly drew praise from environmental groups and transit riders, while business associations and taxpayer advocates questioned whether the financing plan is realistic.
+
+Mayor Priya Desai said the project would modernize a system that has faced years of delays and mechanical failures. She argued that newer trains would lower long-term operating costs, reduce diesel emissions near dense neighborhoods, and make weekday service more dependable for workers who rely on the line.
+
+Opponents did not reject electrification outright, but they said the city has underestimated construction risks, supply-chain delays, and the possibility of higher borrowing costs. A chamber of commerce spokesperson said businesses support better transit but want clearer evidence that the benefits outweigh the upfront expense.
+
+According to the transportation department, the plan would be funded through a mix of municipal bonds, federal infrastructure grants, and phased fare adjustments. An independent transit economist interviewed in the story said the upgrade could produce long-term savings if ridership holds steady, but warned that the most optimistic projections depend on execution staying close to schedule.
+
+Environmental advocates said the switch would improve air quality and help the city meet its climate goals. Taxpayer groups countered that officials should first publish more detailed cost scenarios and explain what happens if grant funding falls short. Several commuters interviewed at the central station said they cared less about the politics than about getting a service that arrives on time.
+
+The article gives both supporters and skeptics room to make their case and notes where key assumptions remain uncertain. While the language occasionally reflects each side's priorities, the piece mostly emphasizes logistics, cost tradeoffs, and evidence still needed before the project moves forward.`,
+        analysis: {
+          democrat_score: 49,
+          republican_score: 46,
+          bias_label: "Mostly Neutral",
+          bias_summary: "The article is relatively balanced and stays close to a center-leaning explanatory style. It presents the environmental and modernization case alongside cost and execution concerns without strongly privileging either side. Most of the framing focuses on logistics, tradeoffs, and remaining uncertainties rather than overt partisan signaling.",
+          methodology_breakdown: {
+            word_choice_score: 28,
+            rhetoric_score: 22,
+            source_score: 64,
+            explanation: "The story uses only a limited amount of partisan-coded language and instead relies on operational terms like costs, ridership, grants, and execution risk. Rhetorically, both supporters and skeptics receive comparable space and neither side is caricatured as extreme. Sourcing is stronger here because the article includes officials, business voices, taxpayer groups, commuters, and an independent economist."
+          },
+          highlighted_spans: [
+            { text: "reduce maintenance costs and improve reliability", type: "neutral", reason: "Practical, outcome-focused phrasing without obvious partisan coding." },
+            { text: "environmental groups and transit riders", type: "left", reason: "Signals a coalition more commonly associated with center-left transit and climate policy." },
+            { text: "business associations and taxpayer advocates", type: "right", reason: "Introduces fiscal skepticism commonly associated with center-right framing." },
+            { text: "lower long-term operating costs", type: "neutral", reason: "Economic framing grounded in measurable outcomes rather than ideology." },
+            { text: "construction risks, supply-chain delays, and the possibility of higher borrowing costs", type: "neutral", reason: "Specific operational concerns framed in a non-partisan way." },
+            { text: "help the city meet its climate goals", type: "left", reason: "Climate-goal framing is more commonly associated with left-of-center priorities." },
+            { text: "publish more detailed cost scenarios", type: "neutral", reason: "Requests additional evidence rather than making a partisan accusation." },
+            { text: "mostly emphasizes logistics, cost tradeoffs, and evidence still needed", type: "neutral", reason: "Summarizes the article's relatively balanced and evidence-focused approach." }
+          ],
+          emotional_score: 23,
+          emotional_words: ["aging commuter rail fleet", "mechanical failures", "construction risks", "higher borrowing costs", "service that arrives on time"],
+          missing_perspectives: [
+            "Detailed rider demographic data showing who benefits most from the proposed upgrade.",
+            "More explicit discussion of how fare adjustments could affect low-income commuters.",
+            "Engineering specialists evaluating the timeline assumptions in the project schedule."
+          ],
+          article_summary: "The article examines a city proposal to electrify its commuter rail fleet. Supporters argue it would improve service and reduce emissions, while skeptics question the financing assumptions and implementation risks. Overall, the piece stays fairly balanced and evidence-oriented.",
+          credibility_grade: "B",
+          credibility_reason: "The article cites multiple named and relevant sources, includes an independent expert, and clearly notes where projections are uncertain.",
+          sources_found: [
+            { name: "Mayor Priya Desai", reference_type: "quoted", credibility_tag: "Primary Source", quote_or_mention: "Quoted defending the rail modernization plan and its expected reliability benefits." },
+            { name: "transportation department", reference_type: "cited", credibility_tag: "Organization", quote_or_mention: "Referenced for the funding structure involving bonds, grants, and fare adjustments." },
+            { name: "independent transit economist", reference_type: "quoted", credibility_tag: "Expert", quote_or_mention: "Quoted assessing long-term savings and schedule risk." },
+            { name: "chamber of commerce spokesperson", reference_type: "quoted", credibility_tag: "Organization", quote_or_mention: "Quoted supporting better transit while questioning whether the benefits outweigh the cost." },
+            { name: "taxpayer groups", reference_type: "mentioned", credibility_tag: "Organization", quote_or_mention: "Referenced as asking for more detailed cost scenarios and contingency planning." }
+          ]
+        }
+      }
+    ];
+
+    let currentDemoIndex = 0;
 
     const elements = {
       welcomeOverlay: document.getElementById("welcomeOverlay"),
@@ -1092,6 +1205,12 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       elements.removeKeyBtn.disabled = isBusy;
       elements.loadingWrap.classList.toggle("active", isBusy);
       elements.loadingLabel.textContent = label || "Analyzing article...";
+    }
+
+    function getRandomDemoIndex(excludingIndex) {
+      const candidates = demoArticles.map((_, index) => index).filter((index) => index !== excludingIndex);
+      if (!candidates.length) return excludingIndex >= 0 ? excludingIndex : 0;
+      return candidates[Math.floor(Math.random() * candidates.length)];
     }
 
     function setStatus(message, isError = false) {
@@ -1609,7 +1728,7 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
         let analysis;
         if (isDemo) {
           await new Promise((resolve) => setTimeout(resolve, 850));
-          analysis = demoAnalysis;
+          analysis = meta.demoAnalysis;
         } else {
           setStatus("Sending article to OpenAI for structured bias analysis...");
           analysis = await analyzeWithOpenAI(articleText);
@@ -1638,11 +1757,23 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       runAnalysis({ text: rawInput });
     }
 
-    function loadDemo() {
+    function loadDemo(index = 0) {
+      const selectedDemo = demoArticles[index] || demoArticles[0];
+      currentDemoIndex = demoArticles.findIndex((demo) => demo.id === selectedDemo.id);
       window.__demoDismissed = true;
       elements.welcomeOverlay.classList.remove("active");
-      elements.articleInput.value = demoArticle;
-      runAnalysis({ text: demoArticle, title: "Demo Article", isDemo: true });
+      elements.articleInput.value = selectedDemo.text;
+      runAnalysis({
+        text: selectedDemo.text,
+        title: selectedDemo.title,
+        isDemo: true,
+        demoAnalysis: selectedDemo.analysis
+      });
+    }
+
+    function loadRandomDemo() {
+      const nextIndex = getRandomDemoIndex(currentDemoIndex);
+      loadDemo(nextIndex);
     }
 
     function clearApp() {
@@ -1679,7 +1810,7 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       setStatus("OpenAI API key saved locally. Lens is ready for live analysis.");
     });
 
-    elements.demoBtn.addEventListener("click", loadDemo);
+    elements.demoBtn.addEventListener("click", () => loadDemo(0));
     elements.removeKeyBtn.addEventListener("click", () => {
       setStoredKey("");
       window.__demoDismissed = false;
@@ -1687,7 +1818,7 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       elements.welcomeOverlay.classList.add("active");
       setStatus("Saved API key removed from localStorage.");
     });
-    elements.loadDemoBtn.addEventListener("click", loadDemo);
+    elements.loadDemoBtn.addEventListener("click", loadRandomDemo);
     elements.analyzeBtn.addEventListener("click", handleAnalyzeClick);
     elements.clearBtn.addEventListener("click", clearApp);
     elements.manageKeyBtn.addEventListener("click", () => {
