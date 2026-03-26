@@ -472,134 +472,114 @@
 
     .bias-hero {
       display: grid;
-      grid-template-columns: 250px minmax(0, 1fr);
-      gap: 18px;
-      align-items: center;
+      gap: 16px;
+      justify-items: center;
+      text-align: center;
     }
 
-    .donut-wrap {
-      position: relative;
-      width: 230px;
-      height: 230px;
-      margin: 0 auto;
+    .verdict-block {
+      display: grid;
+      gap: 6px;
+      justify-items: center;
     }
 
-    .donut {
-      width: 100%;
-      height: 100%;
+    .verdict-title {
+      margin: 0;
+      font-size: 1.7rem;
+      line-height: 1.1;
+      letter-spacing: -0.05em;
+      font-weight: 800;
+    }
+
+    .verdict-title.left {
+      color: var(--blue);
+    }
+
+    .verdict-title.right {
+      color: var(--red);
+    }
+
+    .verdict-title.neutral {
+      color: #64748b;
+    }
+
+    .verdict-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .stacked-donut {
+      display: grid;
+      gap: 10px;
+      justify-items: center;
+    }
+
+    .score-donut {
+      width: 120px;
+      height: 120px;
       display: block;
-      filter: drop-shadow(0 18px 36px rgba(15, 23, 42, 0.08));
+      filter: drop-shadow(0 14px 22px rgba(15, 23, 42, 0.08));
     }
 
-    .donut-base {
+    .score-donut-base {
       fill: #ffffff;
-      stroke: rgba(255, 255, 255, 0.88);
+      stroke: rgba(255, 255, 255, 0.9);
       stroke-width: 2;
     }
 
-    .donut-track {
+    .score-donut-track {
       fill: none;
       stroke: #e2e8f0;
-      stroke-width: 20;
-      stroke-linecap: butt;
+      stroke-width: 12;
     }
 
-    .donut-progress {
+    .score-donut-progress {
       fill: none;
-      stroke-width: 20;
-      stroke-linecap: butt;
+      stroke-width: 12;
+      stroke-linecap: round;
       stroke-dasharray: 0 100;
       transition: stroke-dasharray 1.15s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .donut-progress.democrat {
-      stroke: var(--blue);
-    }
-
-    .donut-progress.republican {
+    .score-donut-progress.republican {
       stroke: var(--red);
     }
 
-    .donut-hole {
+    .score-donut-progress.democrat {
+      stroke: var(--blue);
+    }
+
+    .score-donut-hole {
       fill: #ffffff;
-      stroke: rgba(21, 32, 51, 0.05);
-      stroke-width: 1;
     }
 
-    .needle-line {
-      stroke: #0f172a;
-      stroke-width: 2.25;
-      stroke-linecap: round;
-      opacity: 0.92;
-      transition: x2 1.15s cubic-bezier(0.22, 1, 0.36, 1), y2 1.15s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .needle-hub {
-      fill: #0f172a;
-    }
-
-    .center-divider {
-      stroke: #d9e2ef;
-      stroke-width: 1.5;
-    }
-
-    .score-number {
+    .score-donut-number {
       font-family: "Inter", sans-serif;
-      font-size: 17px;
+      font-size: 1.1rem;
       font-weight: 800;
       letter-spacing: -0.04em;
     }
 
-    .score-sub {
-      font-family: "Inter", sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      fill: var(--muted);
-    }
-
-    .score-number.democrat {
-      fill: var(--blue);
-    }
-
-    .score-number.republican {
+    .score-donut-number.republican {
       fill: var(--red);
     }
 
-    .bias-side {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 14px;
-      font-size: 0.88rem;
-      color: var(--muted);
+    .score-donut-number.democrat {
+      fill: var(--blue);
+    }
+
+    .score-donut-label {
+      font-size: 0.95rem;
       font-weight: 700;
     }
 
-    .bias-side .left-label {
-      color: var(--blue);
-    }
-
-    .bias-side .right-label {
+    .score-donut-label.republican {
       color: var(--red);
     }
 
-    .bias-copy h3 {
-      font-size: 1.4rem;
-      margin-bottom: 8px;
-    }
-
-    .bias-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.05);
-      color: var(--text);
-      font-size: 0.92rem;
-      font-weight: 700;
+    .score-donut-label.democrat {
+      color: var(--blue);
     }
 
     .emotion-score {
@@ -1425,29 +1405,18 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       return difference > 0 ? "Leans Left" : "Leans Right";
     }
 
-    function biasHeadlineLabel(label) {
-      if (label === "Mostly Neutral") return "Mixed / Neutral";
-      return label === "Leans Left" ? "Left-leaning" : "Right-leaning";
+    function verdictToneClass(label) {
+      if (label === "Leans Left") return "left";
+      if (label === "Leans Right") return "right";
+      return "neutral";
     }
 
-    function computeNeedlePoint(democratScore, republicanScore) {
-      const cx = 115;
-      const cy = 115;
-      const length = 46;
-      const difference = Math.max(-100, Math.min(100, republicanScore - democratScore));
-      let angleDegrees = -90;
-
-      if (difference < 0) {
-        angleDegrees = -90 - (Math.abs(difference) / 100) * 90;
-      } else if (difference > 0) {
-        angleDegrees = -90 + (difference / 100) * 90;
-      }
-
-      const angleRadians = (angleDegrees * Math.PI) / 180;
-      return {
-        x2: cx + Math.cos(angleRadians) * length,
-        y2: cy + Math.sin(angleRadians) * length
-      };
+    function verdictTitle(label, democratScore, republicanScore) {
+      const difference = Math.abs(democratScore - republicanScore);
+      if (label === "Mostly Neutral") return "Mostly Neutral";
+      if (difference >= 30) return label === "Leans Left" ? "Strong Left Bias" : "Strong Right Bias";
+      if (difference >= 15) return label === "Leans Left" ? "Moderate Left Bias" : "Moderate Right Bias";
+      return label === "Leans Left" ? "Slight Left Bias" : "Slight Right Bias";
     }
 
     function gradeDescription(grade) {
@@ -1497,40 +1466,36 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       const missingMarkup = analysis.missing_perspectives.length
         ? `<ul>${analysis.missing_perspectives.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
         : `<p>No major omissions were identified.</p>`;
-      const summaryLabel = biasHeadlineLabel(analysis.bias_label);
-      const needlePoint = computeNeedlePoint(analysis.democrat_score, analysis.republican_score);
+      const verdictText = verdictTitle(analysis.bias_label, analysis.democrat_score, analysis.republican_score);
+      const verdictClass = verdictToneClass(analysis.bias_label);
 
       elements.analysisView.innerHTML = `
         <section class="section-card" style="animation-delay: 0.04s;">
           <h3>Bias Meter</h3>
           <div class="bias-hero">
-            <div>
-              <div class="donut-wrap">
-                <svg class="donut" viewBox="0 0 230 230" aria-label="Bias meter donut chart">
-                  <circle class="donut-base" cx="115" cy="115" r="104"></circle>
-                  <path class="donut-track" d="M 115 196 A 81 81 0 0 0 115 34" pathLength="100"></path>
-                  <path class="donut-track" d="M 115 34 A 81 81 0 0 1 115 196" pathLength="100"></path>
-                  <path class="donut-progress democrat" id="democratArc" d="M 115 196 A 81 81 0 0 0 115 34" pathLength="100" stroke-dasharray="0 100"></path>
-                  <path class="donut-progress republican" id="republicanArc" d="M 115 34 A 81 81 0 0 1 115 196" pathLength="100" stroke-dasharray="0 100"></path>
-                  <circle class="donut-hole" cx="115" cy="115" r="56"></circle>
-                  <line class="needle-line" id="biasNeedle" x1="115" y1="115" x2="${needlePoint.x2.toFixed(2)}" y2="${needlePoint.y2.toFixed(2)}"></line>
-                  <circle class="needle-hub" cx="115" cy="115" r="3"></circle>
-                  <line class="center-divider" x1="115" y1="94" x2="115" y2="136"></line>
-                  <text class="score-number democrat" x="86" y="108" text-anchor="middle">${analysis.democrat_score}% D</text>
-                  <text class="score-sub" x="86" y="123" text-anchor="middle">Democrat</text>
-                  <text class="score-number republican" x="144" y="108" text-anchor="middle">${analysis.republican_score}% R</text>
-                  <text class="score-sub" x="144" y="123" text-anchor="middle">Republican</text>
-                </svg>
-              </div>
-              <div class="bias-side">
-                <span class="left-label">Democrat</span>
-                <span class="right-label">Republican</span>
-              </div>
+            <div class="verdict-block">
+              <h4 class="verdict-title ${verdictClass}">${escapeHtml(verdictText)}</h4>
+              <div class="verdict-sub">D: ${analysis.democrat_score}% vs R: ${analysis.republican_score}%</div>
             </div>
-            <div class="bias-copy">
-              <div class="bias-pill">${escapeHtml(analysis.bias_label)}</div>
-              <h3>${escapeHtml(summaryLabel)}</h3>
-              <p>${escapeHtml(analysis.bias_summary)}</p>
+            <div class="stacked-donut">
+              <svg class="score-donut" viewBox="0 0 120 120" aria-label="Republican score donut">
+                <circle class="score-donut-base" cx="60" cy="60" r="53"></circle>
+                <circle class="score-donut-track" cx="60" cy="60" r="45"></circle>
+                <circle class="score-donut-progress republican" id="republicanDonutArc" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 60 60)"></circle>
+                <circle class="score-donut-hole" cx="60" cy="60" r="33"></circle>
+                <text class="score-donut-number republican" x="60" y="66" text-anchor="middle">${analysis.republican_score}%</text>
+              </svg>
+              <div class="score-donut-label republican">Republican</div>
+            </div>
+            <div class="stacked-donut">
+              <svg class="score-donut" viewBox="0 0 120 120" aria-label="Democrat score donut">
+                <circle class="score-donut-base" cx="60" cy="60" r="53"></circle>
+                <circle class="score-donut-track" cx="60" cy="60" r="45"></circle>
+                <circle class="score-donut-progress democrat" id="democratDonutArc" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 60 60)"></circle>
+                <circle class="score-donut-hole" cx="60" cy="60" r="33"></circle>
+                <text class="score-donut-number democrat" x="60" y="66" text-anchor="middle">${analysis.democrat_score}%</text>
+              </svg>
+              <div class="score-donut-label democrat">Democrat</div>
             </div>
           </div>
         </section>
@@ -1585,18 +1550,13 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       `;
 
       requestAnimationFrame(() => {
-        const democratArc = document.getElementById("democratArc");
-        const republicanArc = document.getElementById("republicanArc");
-        const biasNeedle = document.getElementById("biasNeedle");
+        const democratArc = document.getElementById("democratDonutArc");
+        const republicanArc = document.getElementById("republicanDonutArc");
         if (democratArc) {
           democratArc.setAttribute("stroke-dasharray", `${analysis.democrat_score} 100`);
         }
         if (republicanArc) {
           republicanArc.setAttribute("stroke-dasharray", `${analysis.republican_score} 100`);
-        }
-        if (biasNeedle) {
-          biasNeedle.setAttribute("x2", needlePoint.x2.toFixed(2));
-          biasNeedle.setAttribute("y2", needlePoint.y2.toFixed(2));
         }
         const emotionBar = document.getElementById("emotionBar");
         if (emotionBar) {
