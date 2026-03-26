@@ -491,18 +491,6 @@
       font-weight: 800;
     }
 
-    .verdict-title.left {
-      color: var(--blue);
-    }
-
-    .verdict-title.right {
-      color: var(--red);
-    }
-
-    .verdict-title.neutral {
-      color: #64748b;
-    }
-
     .verdict-sub {
       color: var(--muted);
       font-size: 0.95rem;
@@ -538,8 +526,7 @@
       fill: none;
       stroke-width: 12;
       stroke-linecap: round;
-      stroke-dasharray: 0 100;
-      transition: stroke-dasharray 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: stroke-dashoffset 1.15s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .score-donut-progress.republican {
@@ -1405,10 +1392,36 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       return difference > 0 ? "Leans Left" : "Leans Right";
     }
 
-    function verdictToneClass(label) {
-      if (label === "Leans Left") return "left";
-      if (label === "Leans Right") return "right";
-      return "neutral";
+    function interpolateHexColor(start, end, factor) {
+      const startInt = parseInt(start.replace("#", ""), 16);
+      const endInt = parseInt(end.replace("#", ""), 16);
+      const s = {
+        r: (startInt >> 16) & 255,
+        g: (startInt >> 8) & 255,
+        b: startInt & 255
+      };
+      const e = {
+        r: (endInt >> 16) & 255,
+        g: (endInt >> 8) & 255,
+        b: endInt & 255
+      };
+      const mix = (a, b) => Math.round(a + (b - a) * factor);
+      return `rgb(${mix(s.r, e.r)}, ${mix(s.g, e.g)}, ${mix(s.b, e.b)})`;
+    }
+
+    function verdictColor(democratScore, republicanScore) {
+      const blue = "#2161ff";
+      const red = "#d4314f";
+      const neutral = "#64748b";
+      const difference = republicanScore - democratScore;
+      const intensity = Math.min(Math.abs(difference) / 100, 1);
+      if (difference < 0) {
+        return interpolateHexColor(neutral, blue, intensity);
+      }
+      if (difference > 0) {
+        return interpolateHexColor(neutral, red, intensity);
+      }
+      return neutral;
     }
 
     function verdictTitle(label, democratScore, republicanScore) {
@@ -1417,6 +1430,15 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       if (difference >= 30) return label === "Leans Left" ? "Strong Left Bias" : "Strong Right Bias";
       if (difference >= 15) return label === "Leans Left" ? "Moderate Left Bias" : "Moderate Right Bias";
       return label === "Leans Left" ? "Slight Left Bias" : "Slight Right Bias";
+    }
+
+    function setDonutProgress(element, score) {
+      if (!element) return;
+      const radius = Number(element.getAttribute("r")) || 45;
+      const circumference = 2 * Math.PI * radius;
+      const clamped = clampNumber(score, 0, 100, 0);
+      element.style.strokeDasharray = `${circumference}`;
+      element.style.strokeDashoffset = `${circumference * (1 - clamped / 100)}`;
     }
 
     function gradeDescription(grade) {
@@ -1467,21 +1489,21 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
         ? `<ul>${analysis.missing_perspectives.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
         : `<p>No major omissions were identified.</p>`;
       const verdictText = verdictTitle(analysis.bias_label, analysis.democrat_score, analysis.republican_score);
-      const verdictClass = verdictToneClass(analysis.bias_label);
+      const verdictStyle = verdictColor(analysis.democrat_score, analysis.republican_score);
 
       elements.analysisView.innerHTML = `
         <section class="section-card" style="animation-delay: 0.04s;">
           <h3>Bias Meter</h3>
           <div class="bias-hero">
             <div class="verdict-block">
-              <h4 class="verdict-title ${verdictClass}">${escapeHtml(verdictText)}</h4>
+              <h4 class="verdict-title" style="color: ${escapeHtml(verdictStyle)};">${escapeHtml(verdictText)}</h4>
               <div class="verdict-sub">D: ${analysis.democrat_score}% vs R: ${analysis.republican_score}%</div>
             </div>
             <div class="stacked-donut">
               <svg class="score-donut" viewBox="0 0 120 120" aria-label="Republican score donut">
                 <circle class="score-donut-base" cx="60" cy="60" r="53"></circle>
                 <circle class="score-donut-track" cx="60" cy="60" r="45"></circle>
-                <circle class="score-donut-progress republican" id="republicanDonutArc" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 60 60)"></circle>
+                <circle class="score-donut-progress republican" id="republicanDonutArc" cx="60" cy="60" r="45" transform="rotate(-90 60 60)"></circle>
                 <circle class="score-donut-hole" cx="60" cy="60" r="33"></circle>
                 <text class="score-donut-number republican" x="60" y="66" text-anchor="middle">${analysis.republican_score}%</text>
               </svg>
@@ -1491,7 +1513,7 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
               <svg class="score-donut" viewBox="0 0 120 120" aria-label="Democrat score donut">
                 <circle class="score-donut-base" cx="60" cy="60" r="53"></circle>
                 <circle class="score-donut-track" cx="60" cy="60" r="45"></circle>
-                <circle class="score-donut-progress democrat" id="democratDonutArc" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 60 60)"></circle>
+                <circle class="score-donut-progress democrat" id="democratDonutArc" cx="60" cy="60" r="45" transform="rotate(-90 60 60)"></circle>
                 <circle class="score-donut-hole" cx="60" cy="60" r="33"></circle>
                 <text class="score-donut-number democrat" x="60" y="66" text-anchor="middle">${analysis.democrat_score}%</text>
               </svg>
@@ -1553,10 +1575,10 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
         const democratArc = document.getElementById("democratDonutArc");
         const republicanArc = document.getElementById("republicanDonutArc");
         if (democratArc) {
-          democratArc.setAttribute("stroke-dasharray", `${analysis.democrat_score} 100`);
+          setDonutProgress(democratArc, analysis.democrat_score);
         }
         if (republicanArc) {
-          republicanArc.setAttribute("stroke-dasharray", `${analysis.republican_score} 100`);
+          setDonutProgress(republicanArc, analysis.republican_score);
         }
         const emotionBar = document.getElementById("emotionBar");
         if (emotionBar) {
