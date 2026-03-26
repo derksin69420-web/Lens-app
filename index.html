@@ -1705,13 +1705,13 @@ The article gives both supporters and skeptics room to make their case and notes
       });
     }
 
-    async function runAnalysis({ text, sourceUrl, title, description, isDemo = false }) {
+    async function runAnalysis({ text, sourceUrl, title, description, isDemo = false, demoAnalysis = null }) {
       setBusy(true, isDemo ? "Loading demo analysis..." : sourceUrl ? "Fetching and analyzing article..." : "Analyzing article...");
       setStatus(isDemo ? "Rendering sample article and realistic demo results..." : "Preparing article for analysis...");
 
       try {
         let articleText = text.trim();
-        let meta = { sourceUrl, title, description };
+        let meta = { sourceUrl, title, description, demoAnalysis };
 
         if (!isDemo && sourceUrl) {
           setStatus("Fetching article through corsproxy.io and extracting readable text...");
@@ -1771,8 +1771,8 @@ The article gives both supporters and skeptics room to make their case and notes
       });
     }
 
-    function loadRandomDemo() {
-      const nextIndex = getRandomDemoIndex(currentDemoIndex);
+    function loadNextDemo() {
+      const nextIndex = (currentDemoIndex + 1) % demoArticles.length;
       loadDemo(nextIndex);
     }
 
@@ -1818,7 +1818,7 @@ The article gives both supporters and skeptics room to make their case and notes
       elements.welcomeOverlay.classList.add("active");
       setStatus("Saved API key removed from localStorage.");
     });
-    elements.loadDemoBtn.addEventListener("click", loadRandomDemo);
+    elements.loadDemoBtn.addEventListener("click", loadNextDemo);
     elements.analyzeBtn.addEventListener("click", handleAnalyzeClick);
     elements.clearBtn.addEventListener("click", clearApp);
     elements.manageKeyBtn.addEventListener("click", () => {
