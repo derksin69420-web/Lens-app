@@ -479,7 +479,7 @@
 
     .verdict-block {
       display: grid;
-      gap: 6px;
+      gap: 0;
       justify-items: center;
     }
 
@@ -1497,7 +1497,6 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
           <div class="bias-hero">
             <div class="verdict-block">
               <h4 class="verdict-title" style="color: ${escapeHtml(verdictStyle)};">${escapeHtml(verdictText)}</h4>
-              <div class="verdict-sub">D: ${analysis.democrat_score}% vs R: ${analysis.republican_score}%</div>
             </div>
             <div class="stacked-donut">
               <svg class="score-donut" viewBox="0 0 120 120" aria-label="Republican score donut">
