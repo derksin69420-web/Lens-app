@@ -739,79 +739,241 @@
     }
 
     .welcome-card {
-      max-width: 760px;
+      max-width: 820px;
       width: 100%;
-      border-radius: 32px;
-      background: rgba(255, 255, 255, 0.96);
-      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 36px;
+      background:
+        radial-gradient(circle at top left, rgba(33, 97, 255, 0.1), transparent 26%),
+        radial-gradient(circle at top right, rgba(212, 49, 79, 0.1), transparent 24%),
+        rgba(255, 255, 255, 0.97);
+      border: 1px solid rgba(255, 255, 255, 0.78);
       box-shadow: 0 28px 80px rgba(15, 23, 42, 0.2);
       overflow: hidden;
     }
 
     .welcome-hero {
-      padding: 34px 34px 24px;
+      padding: 38px 38px 18px;
+      text-align: center;
       background:
-        radial-gradient(circle at left top, rgba(33, 97, 255, 0.14), transparent 32%),
+        radial-gradient(circle at left top, rgba(33, 97, 255, 0.16), transparent 32%),
         radial-gradient(circle at right top, rgba(212, 49, 79, 0.14), transparent 28%),
-        linear-gradient(145deg, #ffffff, #f5f8fd);
+        linear-gradient(145deg, #ffffff, #f6f9fe);
     }
 
-    .welcome-hero h2 {
+    .welcome-wordmark {
       margin: 0;
-      font-size: 2.25rem;
+      font-size: 2.8rem;
       letter-spacing: -0.05em;
+      font-weight: 800;
     }
 
-    .welcome-hero p {
-      margin: 12px 0 0;
+    .welcome-tagline {
+      margin: 10px 0 0;
+      font-size: 1.28rem;
+      line-height: 1.25;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--text);
+    }
+
+    .welcome-subtitle {
+      margin: 8px auto 0;
       color: var(--muted);
       font-size: 1rem;
-      line-height: 1.7;
-      max-width: 640px;
+      line-height: 1.65;
+      max-width: 560px;
     }
 
     .welcome-body {
-      padding: 0 34px 34px;
+      padding: 0 38px 38px;
       display: grid;
-      gap: 16px;
+      gap: 20px;
     }
 
-    .welcome-grid {
+    .stats-row {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
     }
 
-    .welcome-tile {
-      border-radius: 22px;
-      border: 1px solid var(--line);
+    .stat-pill {
+      display: grid;
+      place-items: center;
+      min-height: 58px;
+      border-radius: 999px;
+      border: 1px solid rgba(185, 200, 220, 0.7);
+      background: rgba(255, 255, 255, 0.86);
+      color: #31425f;
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 12px 16px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      animation: statFloat 5.5s ease-in-out infinite;
+    }
+
+    .stat-pill:nth-child(2) {
+      animation-delay: 0.8s;
+    }
+
+    .stat-pill:nth-child(3) {
+      animation-delay: 1.6s;
+    }
+
+    @keyframes statFloat {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-2px);
+      }
+    }
+
+    .steps-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .step-card {
+      border-radius: 24px;
+      border: 1px solid rgba(217, 226, 239, 0.88);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 251, 255, 0.92));
       padding: 16px;
-      background: #f8fbff;
+      display: grid;
+      gap: 8px;
+      text-align: left;
     }
 
-    .welcome-tile strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.96rem;
+    .step-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.03em;
     }
 
-    .welcome-tile p {
+    .step-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(33, 97, 255, 0.12), rgba(212, 49, 79, 0.12));
+      font-size: 1.1rem;
+    }
+
+    .step-card p {
       margin: 0;
       color: var(--muted);
       line-height: 1.55;
       font-size: 0.92rem;
     }
 
+    .welcome-field {
+      display: grid;
+      gap: 12px;
+      padding: 22px;
+      border-radius: 28px;
+      border: 1px solid rgba(217, 226, 239, 0.9);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    }
+
+    .welcome-label-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .welcome-label-row label {
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .privacy-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .privacy-lock {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(33, 97, 255, 0.08);
+      color: var(--blue);
+      font-size: 0.82rem;
+    }
+
+    .welcome-field input[type="password"] {
+      min-height: 62px;
+      padding: 18px 20px;
+      border-radius: 20px;
+      font-size: 1rem;
+      border: 1px solid rgba(185, 200, 220, 0.95);
+      background: rgba(255, 255, 255, 0.98);
+    }
+
+    .welcome-actions {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .welcome-actions button {
+      min-height: 62px;
+      border-radius: 20px;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .welcome-actions .btn-primary {
+      background: linear-gradient(135deg, #2c63ff 0%, #2a47de 45%, #9333ea 100%);
+    }
+
+    .welcome-actions .btn-secondary {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(185, 200, 220, 0.95);
+    }
+
+    .welcome-remove {
+      justify-self: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: transparent;
+      border: 0;
+      padding: 4px 8px;
+    }
+
+    .welcome-remove:hover:not(:disabled) {
+      transform: none;
+      color: var(--text);
+    }
+
     .footer-note {
       color: var(--muted);
-      font-size: 0.88rem;
+      font-size: 0.82rem;
+      text-align: center;
     }
 
     @media (max-width: 1120px) {
       .workspace,
       .composer-grid,
       .bias-hero,
-      .welcome-grid {
+      .stats-row,
+      .steps-strip {
         grid-template-columns: 1fr;
       }
 
@@ -839,8 +1001,16 @@
         padding-right: 20px;
       }
 
-      .welcome-hero h2 {
-        font-size: 1.85rem;
+      .welcome-wordmark {
+        font-size: 2.15rem;
+      }
+
+      .welcome-tagline {
+        font-size: 1.1rem;
+      }
+
+      .welcome-actions {
+        grid-template-columns: 1fr;
       }
 
       .donut-wrap {
@@ -854,35 +1024,55 @@
   <div class="overlay" id="welcomeOverlay">
     <div class="welcome-card">
       <div class="welcome-hero">
-        <h2>See how political framing shapes the story.</h2>
-        <p>Lens analyzes article language, emotional framing, sourcing, and missing perspectives. Add your OpenAI API key to run live analysis with <code>gpt-4o</code>, or launch a full demo without a key.</p>
+        <h2 class="welcome-wordmark">🔍 Lens</h2>
+        <div class="welcome-tagline">Know what you're really reading.</div>
+        <p class="welcome-subtitle">AI-powered bias detection for news articles</p>
       </div>
       <div class="welcome-body">
-        <div class="welcome-grid">
-          <div class="welcome-tile">
-            <strong>Inline Bias Highlights</strong>
-            <p>Scan left and right leaning language directly inside the article with hover explanations.</p>
+        <div class="stats-row">
+          <div class="stat-pill">10+ Bias Signals Detected</div>
+          <div class="stat-pill">Left · Center · Right Analysis</div>
+          <div class="stat-pill">Source Credibility Scoring</div>
+        </div>
+        <div class="steps-strip">
+          <div class="step-card">
+            <div class="step-top">
+              <div class="step-icon">📋</div>
+              <div>Paste text or a URL</div>
+            </div>
+            <p>Drop in an article directly or let Lens fetch and extract it for you.</p>
           </div>
-          <div class="welcome-tile">
-            <strong>Source Credibility</strong>
-            <p>Surface named sources, vague references, anonymous claims, and verification strength.</p>
+          <div class="step-card">
+            <div class="step-top">
+              <div class="step-icon">🔍</div>
+              <div>AI scans for bias signals</div>
+            </div>
+            <p>Lens checks framing, rhetoric, emotional intensity, sourcing, and missing perspectives.</p>
           </div>
-          <div class="welcome-tile">
-            <strong>Premium Report View</strong>
-            <p>Get a document-style dashboard with a bias meter, emotional score, summary, and missing voices.</p>
+          <div class="step-card">
+            <div class="step-top">
+              <div class="step-icon">📊</div>
+              <div>Get your full report</div>
+            </div>
+            <p>Review a polished breakdown with highlights, scoring, summaries, and credibility cues.</p>
           </div>
         </div>
-        <div class="field">
-          <label for="apiKeyInput">OpenAI API Key</label>
+        <div class="welcome-field">
+          <div class="welcome-label-row">
+            <label for="apiKeyInput">OpenAI API Key</label>
+            <div class="privacy-note">
+              <span class="privacy-lock">🔒</span>
+              <span>Stored privately in your browser - never shared</span>
+            </div>
+          </div>
           <input id="apiKeyInput" type="password" placeholder="sk-..." autocomplete="off" />
-          <div class="hint">Stored locally in your browser as <code>lens_openai_key</code>. You can change or remove it anytime from the top right.</div>
         </div>
-        <div class="button-row">
-          <button class="btn-primary" id="saveKeyBtn">Save Key & Continue</button>
-          <button class="btn-secondary" id="demoBtn">Try Demo</button>
-          <button class="btn-ghost" id="removeKeyBtn">Remove Saved Key</button>
+        <div class="welcome-actions">
+          <button class="btn-primary" id="saveKeyBtn">Analyze with My Key</button>
+          <button class="btn-secondary" id="demoBtn">Try Demo →</button>
         </div>
-        <div class="footer-note">Live analysis fetches article content through <code>corsproxy.io</code> and sends extracted text to the OpenAI API for structured JSON analysis.</div>
+        <button class="welcome-remove" id="removeKeyBtn" type="button">Remove Saved Key</button>
+        <div class="footer-note">Powered by GPT-4o · Built with OpenAI Codex</div>
       </div>
     </div>
   </div>
