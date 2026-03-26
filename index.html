@@ -29,7 +29,6 @@
       --radius-xl: 28px;
       --radius-lg: 20px;
       --radius-md: 14px;
-      --bias-angle: 270deg;
     }
 
     * {
@@ -489,71 +488,120 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background:
-        radial-gradient(circle at center, #ffffff 0 50%, transparent 51% 100%),
-        conic-gradient(from 90deg, rgba(33, 97, 255, 0.18) 0deg 180deg, rgba(212, 49, 79, 0.18) 180deg 360deg);
+      background: rgba(226, 232, 240, 0.92);
       border: 16px solid rgba(255, 255, 255, 0.88);
       box-shadow:
         inset 0 0 0 1px rgba(21, 32, 51, 0.06),
         0 18px 36px rgba(15, 23, 42, 0.08);
       position: relative;
+      overflow: hidden;
     }
 
     .donut::before {
       content: "";
       position: absolute;
-      inset: 18px;
+      inset: 0;
       border-radius: 50%;
-      background:
-        conic-gradient(from 90deg, rgba(33, 97, 255, 0.92) 0deg 180deg, rgba(212, 49, 79, 0.92) 180deg 360deg);
+      background: radial-gradient(circle at center, transparent 0 54%, #e2e8f0 55% 74%, transparent 75% 100%);
+    }
+
+    .donut::after {
+      content: "";
+      position: absolute;
+      inset: 34px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      z-index: 1;
+    }
+
+    .donut-half {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
       -webkit-mask: radial-gradient(circle at center, transparent 0 54%, #000 55% 100%);
       mask: radial-gradient(circle at center, transparent 0 54%, #000 55% 100%);
     }
 
-    .ring-indicator {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 0;
-      height: 0;
-      transform: rotate(var(--bias-angle));
-      transform-origin: center;
-      transition: transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
-      pointer-events: none;
+    .donut-half.left {
+      clip-path: inset(0 50% 0 0);
     }
 
-    .ring-indicator::after {
-      content: "";
+    .donut-half.right {
+      clip-path: inset(0 0 0 50%);
+    }
+
+    .half-fill {
       position: absolute;
-      left: 0;
-      top: 0;
-      transform: translate(108px, -11px);
-      border-right: 17px solid #0f172a;
-      border-top: 11px solid transparent;
-      border-bottom: 11px solid transparent;
-      filter: drop-shadow(0 8px 12px rgba(15, 23, 42, 0.22));
+      inset: 0;
+      transform: scaleX(0);
+      transition: transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .donut-half.left .half-fill {
+      transform-origin: right center;
+      background: linear-gradient(270deg, rgba(33, 97, 255, 0.96), rgba(33, 97, 255, 0.78));
+    }
+
+    .donut-half.right .half-fill {
+      transform-origin: left center;
+      background: linear-gradient(90deg, rgba(212, 49, 79, 0.96), rgba(212, 49, 79, 0.78));
     }
 
     .donut-center {
       position: absolute;
-      inset: 0;
+      inset: 34px;
       display: grid;
       place-items: center;
       text-align: center;
       pointer-events: none;
-      padding: 0 50px;
+      padding: 0 22px;
+      z-index: 2;
     }
 
-    .donut-center strong {
+    .donut-score-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .donut-score {
+      display: grid;
+      gap: 4px;
+    }
+
+    .donut-score strong {
       display: block;
-      font-size: 2rem;
+      font-size: 1.4rem;
       letter-spacing: -0.05em;
+      line-height: 1;
     }
 
-    .donut-center span {
+    .donut-score span {
       color: var(--muted);
-      font-size: 0.93rem;
+      font-size: 0.78rem;
       line-height: 1.35;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .donut-score.democrat {
+      text-align: left;
+    }
+
+    .donut-score.democrat strong {
+      color: var(--blue);
+    }
+
+    .donut-score.republican {
+      text-align: right;
+    }
+
+    .donut-score.republican strong {
+      color: var(--red);
     }
 
     .bias-side {
@@ -1008,9 +1056,16 @@ Advocacy groups aligned with the governor celebrated the vote as a moral turning
 Local residents interviewed after the vote voiced mixed reactions. A public school teacher said the plan "puts people ahead of profits" and could improve air quality in neighborhoods near freight corridors. A trucking company owner said lawmakers ignored communities that depend on affordable fuel and stable freight routes. Neither side presented new data during the interviews, and the debate often centered on competing political narratives rather than measurable outcomes.`;
 
     const demoAnalysis = {
-      bias_score: 36,
+      democrat_score: 68,
+      republican_score: 34,
       bias_label: "Leans Left",
       bias_summary: "The article leans left by framing the climate and labor package in morally favorable terms and by foregrounding the governor's language about corporate greed, polluters, and working families. Right-leaning objections are included, but they are often presented as reactive pushback against a reform-oriented narrative. Emotional phrases such as 'holding communities hostage,' 'radical activists,' and 'callous obstruction' heighten the partisan framing on both sides.",
+      methodology_breakdown: {
+        word_choice_score: 72,
+        rhetoric_score: 66,
+        source_score: 48,
+        explanation: "Word choice tilts left through phrases like 'corporate greed,' 'working families,' and 'polluters and profiteers.' Rhetorically, supporters receive more morally affirmative framing while conservative objections are often framed as reactive or extreme. Sourcing is mixed because the article quotes political actors and advocates from both sides but relies only lightly on independent verification."
+      },
       highlighted_spans: [
         { text: "finally standing up to corporate greed", type: "left", reason: "Frames the policy as a populist fight against corporations, a common left-leaning narrative." },
         { text: "long-overdue investment in working families", type: "left", reason: "Uses sympathetic language aligned with progressive economic framing." },
@@ -1183,12 +1238,14 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
           role: "system",
           content: [
             "You are Lens, an AI media bias detector.",
-            "Analyze the article for partisan framing, emotional intensity, sourcing, and summary.",
+            "Analyze the article for partisan framing, emotional intensity, sourcing, and summary using a rigorous media-bias methodology.",
             "Return ONLY valid JSON matching these exact fields:",
             "{",
-            '  "bias_score": number,',
+            '  "democrat_score": number,',
+            '  "republican_score": number,',
             '  "bias_label": string,',
             '  "bias_summary": string,',
+            '  "methodology_breakdown": {"word_choice_score": number, "rhetoric_score": number, "source_score": number, "explanation": string},',
             '  "highlighted_spans": [{"text": string, "type": "left"|"right"|"emotional"|"neutral", "reason": string}],',
             '  "emotional_score": number,',
             '  "emotional_words": [string, string, string, string, string],',
@@ -1198,8 +1255,18 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
             '  "credibility_reason": string,',
             '  "sources_found": [{"name": string, "reference_type": string, "credibility_tag": "Primary Source"|"Expert"|"Organization"|"Anonymous"|"Unverified", "quote_or_mention": string}]',
             "}",
-            "Rules:",
-            "- bias_score is 0-100 where 50 is center, 0 is far left, and 100 is far right.",
+            "Methodology:",
+            "- Compare specific word choices against known partisan vocabulary.",
+            '- LEFT-CODED examples: "undocumented immigrant", "gun safety", "climate crisis", "reproductive rights", "equity", "systemic".',
+            '- RIGHT-CODED examples: "illegal alien", "gun rights", "climate change hoax", "pro-life", "traditional values", "radical left".',
+            "- Identify rhetorical techniques: who is quoted first and most often, which side is presented as reasonable versus extreme, where negative adjectives cluster, and what context is included or excluded.",
+            "- Cross-reference the article framing style against known outlet patterns: FAR LEFT (Common Dreams, Jacobin, Mother Jones), LEFT (NYT opinion, MSNBC, CNN), CENTER (AP, Reuters, BBC), RIGHT (Fox News, WSJ opinion, NY Post), FAR RIGHT (Breitbart, Daily Wire, Newsmax).",
+            "Scoring rules:",
+            "- democrat_score is 0-100 for how much Democrat-coded or left-leaning framing is present.",
+            "- republican_score is 0-100 for how much Republican-coded or right-leaning framing is present.",
+            "- These scores are independent and do not need to sum to 100.",
+            '- Set bias_label to "Leans Left" if democrat_score exceeds republican_score by more than 5 points, "Leans Right" if republican_score exceeds democrat_score by more than 5 points, otherwise "Mostly Neutral".',
+            "- methodology_breakdown must explain how word choice, rhetoric, and sourcing contributed to the scores.",
             "- highlighted_spans must contain short exact snippets copied from the article whenever possible.",
             "- Return 3-4 missing_perspectives items.",
             "- Return exactly 5 emotional_words when possible.",
@@ -1256,13 +1323,22 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
     }
 
     function normalizeAnalysis(data) {
-      const score = clampNumber(data.bias_score, 0, 100, 50);
+      const democratScore = clampNumber(data.democrat_score, 0, 100, 0);
+      const republicanScore = clampNumber(data.republican_score, 0, 100, 0);
       const emotionalScore = clampNumber(data.emotional_score, 0, 100, 0);
       const grade = ["A", "B", "C", "D", "F"].includes(data.credibility_grade) ? data.credibility_grade : "C";
+      const breakdown = data.methodology_breakdown && typeof data.methodology_breakdown === "object" ? data.methodology_breakdown : {};
       return {
-        bias_score: score,
-        bias_label: String(data.bias_label || (score < 50 ? "Leans Left" : score > 50 ? "Leans Right" : "Balanced")),
+        democrat_score: democratScore,
+        republican_score: republicanScore,
+        bias_label: deriveBiasLabel(democratScore, republicanScore),
         bias_summary: String(data.bias_summary || ""),
+        methodology_breakdown: {
+          word_choice_score: clampNumber(breakdown.word_choice_score, 0, 100, 0),
+          rhetoric_score: clampNumber(breakdown.rhetoric_score, 0, 100, 0),
+          source_score: clampNumber(breakdown.source_score, 0, 100, 0),
+          explanation: String(breakdown.explanation || "")
+        },
         highlighted_spans: Array.isArray(data.highlighted_spans) ? data.highlighted_spans.slice(0, 40).map((span) => ({
           text: String(span.text || "").trim(),
           type: ["left", "right", "emotional", "neutral"].includes(span.type) ? span.type : "neutral",
@@ -1380,16 +1456,15 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       return "Anonymous / weak";
     }
 
-    function biasDisplay(score) {
-      if (score === 50) {
-        return { label: "Balanced", percent: 0 };
-      }
-      const left = score < 50;
-      const percent = Math.round((Math.abs(score - 50) / 50) * 100);
-      return {
-        label: left ? "Left-leaning" : "Right-leaning",
-        percent
-      };
+    function deriveBiasLabel(democratScore, republicanScore) {
+      const difference = democratScore - republicanScore;
+      if (Math.abs(difference) <= 5) return "Mostly Neutral";
+      return difference > 0 ? "Leans Left" : "Leans Right";
+    }
+
+    function biasHeadlineLabel(label) {
+      if (label === "Mostly Neutral") return "Mixed / Neutral";
+      return label === "Leans Left" ? "Left-leaning" : "Right-leaning";
     }
 
     function gradeDescription(grade) {
@@ -1415,8 +1490,6 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       renderMeta({ articleText, ...meta });
       elements.articleView.innerHTML = buildHighlightedHtml(articleText, analysis.highlighted_spans);
 
-      const biasInfo = biasDisplay(analysis.bias_score);
-      const indicatorAngle = 180 + (analysis.bias_score / 100) * 180;
       const sourceMarkup = analysis.sources_found.length
         ? analysis.sources_found.map((source) => `
           <div class="source-card">
@@ -1441,6 +1514,7 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       const missingMarkup = analysis.missing_perspectives.length
         ? `<ul>${analysis.missing_perspectives.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
         : `<p>No major omissions were identified.</p>`;
+      const summaryLabel = biasHeadlineLabel(analysis.bias_label);
 
       elements.analysisView.innerHTML = `
         <section class="section-card" style="animation-delay: 0.04s;">
@@ -1448,12 +1522,24 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
           <div class="bias-hero">
             <div>
               <div class="donut-wrap">
-                <div class="donut"></div>
-                <div class="ring-indicator" id="biasIndicator"></div>
+                <div class="donut">
+                  <div class="donut-half left">
+                    <div class="half-fill" id="democratFill"></div>
+                  </div>
+                  <div class="donut-half right">
+                    <div class="half-fill" id="republicanFill"></div>
+                  </div>
+                </div>
                 <div class="donut-center">
-                  <div>
-                    <strong>${biasInfo.percent}%</strong>
-                    <span>${escapeHtml(biasInfo.label)}</span>
+                  <div class="donut-score-grid">
+                    <div class="donut-score democrat">
+                      <strong>${analysis.democrat_score}% D</strong>
+                      <span>Democrat</span>
+                    </div>
+                    <div class="donut-score republican">
+                      <strong>${analysis.republican_score}% R</strong>
+                      <span>Republican</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1464,7 +1550,7 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
             </div>
             <div class="bias-copy">
               <div class="bias-pill">${escapeHtml(analysis.bias_label)}</div>
-              <h3>${biasInfo.percent}% ${escapeHtml(biasInfo.label)}</h3>
+              <h3>${escapeHtml(summaryLabel)}</h3>
               <p>${escapeHtml(analysis.bias_summary)}</p>
             </div>
           </div>
@@ -1473,6 +1559,12 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
         <section class="section-card" style="animation-delay: 0.12s;">
           <h3>Political Summary</h3>
           <p>${escapeHtml(analysis.bias_summary)}</p>
+          <div class="tag-list">
+            <span class="tag">Word Choice ${analysis.methodology_breakdown.word_choice_score}/100</span>
+            <span class="tag">Rhetoric ${analysis.methodology_breakdown.rhetoric_score}/100</span>
+            <span class="tag">Source Pattern ${analysis.methodology_breakdown.source_score}/100</span>
+          </div>
+          <p>${escapeHtml(analysis.methodology_breakdown.explanation || "Methodology breakdown was not provided.")}</p>
         </section>
 
         <section class="section-card" style="animation-delay: 0.2s;">
@@ -1514,7 +1606,14 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
       `;
 
       requestAnimationFrame(() => {
-        document.documentElement.style.setProperty("--bias-angle", indicatorAngle + "deg");
+        const democratFill = document.getElementById("democratFill");
+        const republicanFill = document.getElementById("republicanFill");
+        if (democratFill) {
+          democratFill.style.transform = "scaleX(" + (analysis.democrat_score / 100) + ")";
+        }
+        if (republicanFill) {
+          republicanFill.style.transform = "scaleX(" + (analysis.republican_score / 100) + ")";
+        }
         const emotionBar = document.getElementById("emotionBar");
         if (emotionBar) {
           emotionBar.style.width = analysis.emotional_score + "%";
@@ -1600,7 +1699,6 @@ Local residents interviewed after the vote voiced mixed reactions. A public scho
           </div>
         </div>
       `;
-      document.documentElement.style.setProperty("--bias-angle", "270deg");
       setStatus("Ready to analyze pasted text or fetch an article by URL.");
     }
 
